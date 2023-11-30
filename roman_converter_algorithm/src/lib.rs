@@ -15,7 +15,6 @@ pub fn apply_conversion(converter: RomanConverter, input: String) -> Result<Stri
 
 pub type RomanConverter = fn(roman: RomanExpression) -> u32;
 pub fn roman_to_integer(roman: RomanExpression) -> u32 {
-    if roman.value.len() == 0 {return 0}
     let mut integer_values = parse_roman_to_integers(roman);
     compute_pre_values(&mut integer_values);
     integer_values.iter().cloned().sum()
@@ -110,19 +109,20 @@ mod tests {
         assert_eq!(1949, roman_to_integer(RomanExpression::from_string(String::from("MCMXLIX")).unwrap()));
         assert_eq!(1789, roman_to_integer(RomanExpression::from_string(String::from("MDCCLXXXIX")).unwrap()));
     }
-    #[test]
-    fn what_happen_if_the_input_is_an_empty_roman_expression(){
-        assert_eq!(0, roman_to_integer(RomanExpression::from_string(String::from("")).unwrap()));
-    }
 
     #[test]
     fn numerically_invalid_roman_expression_should_not_be_accepted(){
-        let input = RomanExpression::from_string(String::from("VX"));
-        let input = RomanExpression::from_string(String::from("ICM"));
-        let input = RomanExpression::from_string(String::from("IL"));
-        let input = RomanExpression::from_string(String::from("IVDLXXI"));
-        let input = RomanExpression::from_string(String::from("VIIVII"));
-        let input = RomanExpression::from_string(String::from("MDCCLXXXIXVII"));
-        assert_matches!(input, None);
+        let result1 = apply_conversion(roman_to_integer, String::from("VX"));
+        assert_matches!(result1, Err(()));
+        let result2 = apply_conversion(roman_to_integer, String::from("ICM"));
+        assert_matches!(result2, Err(()));
+        let result3 = apply_conversion(roman_to_integer, String::from("IL"));
+        assert_matches!(result3, Err(()));
+        let result4 = apply_conversion(roman_to_integer, String::from("IVDLXXI"));
+        assert_matches!(result4, Err(()));
+        let result5 = apply_conversion(roman_to_integer, String::from("VIIVII"));
+        assert_matches!(result5, Err(()));
+        let result6 = apply_conversion(roman_to_integer, String::from("MDCCLXXXIXVII"));
+        assert_matches!(result6, Err(()));
     }
 }
