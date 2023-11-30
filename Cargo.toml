@@ -1,0 +1,9 @@
+[package]
+name = "Roman_Number_Coverter"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+roman_converter_algorithm = {path = "roman_converter_algorithm" }
