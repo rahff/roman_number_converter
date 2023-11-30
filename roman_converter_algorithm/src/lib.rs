@@ -96,7 +96,7 @@ mod tests {
         assert_eq!(40, roman_to_integer(RomanExpression::from_string(String::from("XL")).unwrap()));
     }
 
-    #[test]
+        #[test]
     fn convert_many_symbol() {
         assert_eq!(14, roman_to_integer(RomanExpression::from_string(String::from("XIV")).unwrap()));
         assert_eq!(13, roman_to_integer(RomanExpression::from_string(String::from("XIII")).unwrap()));
@@ -105,9 +105,15 @@ mod tests {
     }
     #[test]
     fn convert_many_symbol_with_mix_regular_and_subtracted(){
-        assert_eq!(1979, roman_to_integer(RomanExpression::from_string(String::from("MCMLXXIX")).unwrap()));
-        assert_eq!(1949, roman_to_integer(RomanExpression::from_string(String::from("MCMXLIX")).unwrap()));
-        assert_eq!(1789, roman_to_integer(RomanExpression::from_string(String::from("MDCCLXXXIX")).unwrap()));
+        let expected1 = String::from("1979");
+        let result1 = apply_conversion(roman_to_integer, String::from("MCMLXXIX"));
+        assert_matches!(result1, Ok(expected));
+        let expected2 = String::from("1949");
+        let result2 = apply_conversion(roman_to_integer, String::from("MCMXLIX"));
+        assert_matches!(result2, Ok(expected2));
+        let expected3 = String::from("1789");
+        let result3 = apply_conversion(roman_to_integer, String::from("MDCCLXXXIX"));
+        assert_matches!(result3, Ok(expected3));
     }
 
     #[test]
