@@ -9,6 +9,7 @@ impl RomanCharacter {
         RomanCharacter {figure: value}
     }
 }
+
 #[derive(Debug)]
 pub struct RomanExpression {
     pub value: String
@@ -22,10 +23,6 @@ impl RomanExpression {
         }else { None }
     }
 
-    fn is_roman_character(character: char) -> bool {
-        matches!(character, 'I' | 'V' | 'X' | 'L' | 'C' | 'D' | 'M')
-    }
-
     fn is_structurally_valid(value: &String) -> bool {
          Self::is_only_composed_by_roman_figures(value)
                          &
@@ -36,6 +33,10 @@ impl RomanExpression {
 
     fn is_only_composed_by_roman_figures(value: &String) -> bool {
         value.trim().chars().all(Self::is_roman_character)
+    }
+
+    fn is_roman_character(character: char) -> bool {
+        matches!(character, 'I' | 'V' | 'X' | 'L' | 'C' | 'D' | 'M')
     }
 
     fn is_numerically_valid(value: &String) -> bool {

@@ -2,19 +2,19 @@ pub mod model;
 
 use crate::model::{RomanCharacter, RomanExpression};
 
-pub type ConverterUseCase = fn(converter: RomanConverter, input: String) -> Result<String, ()>;
-pub fn apply_conversion(converter: RomanConverter, input: String) -> Result<String, ()> {
+pub type ConverterAlgorithm = fn(input: String) -> Result<String, ()>;
+pub fn apply_conversion(input: String) -> Result<String, ()> {
     let roman_expression = RomanExpression::from_string(input);
     let roman_number = match roman_expression {
         Some(roman) => roman,
         None => return Err(())
 
     };
-    Ok(converter(roman_number).to_string())
+    Ok(roman_to_integer(roman_number).to_string())
 }
 
 pub type RomanConverter = fn(roman: RomanExpression) -> u32;
-pub fn roman_to_integer(roman: RomanExpression) -> u32 {
+fn roman_to_integer(roman: RomanExpression) -> u32 {
     let mut integer_values = parse_roman_to_integers(roman);
     compute_pre_values(&mut integer_values);
     integer_values.iter().cloned().sum()
@@ -106,29 +106,29 @@ mod tests {
     #[test]
     fn convert_many_symbol_with_mix_regular_and_subtracted(){
         let expected1 = String::from("1979");
-        let result1 = apply_conversion(roman_to_integer, String::from("MCMLXXIX"));
+        let result1 = apply_conversion(String::from("MCMLXXIX"));
         assert_matches!(result1, Ok(expected));
         let expected2 = String::from("1949");
-        let result2 = apply_conversion(roman_to_integer, String::from("MCMXLIX"));
+        let result2 = apply_conversion(String::from("MCMXLIX"));
         assert_matches!(result2, Ok(expected2));
         let expected3 = String::from("1789");
-        let result3 = apply_conversion(roman_to_integer, String::from("MDCCLXXXIX"));
+        let result3 = apply_conversion(String::from("MDCCLXXXIX"));
         assert_matches!(result3, Ok(expected3));
     }
 
     #[test]
     fn numerically_invalid_roman_expression_should_not_be_accepted(){
-        let result1 = apply_conversion(roman_to_integer, String::from("VX"));
+        let result1 = apply_conversion(String::from("VX"));
         assert_matches!(result1, Err(()));
-        let result2 = apply_conversion(roman_to_integer, String::from("ICM"));
+        let result2 = apply_conversion(String::from("ICM"));
         assert_matches!(result2, Err(()));
-        let result3 = apply_conversion(roman_to_integer, String::from("IL"));
+        let result3 = apply_conversion(String::from("IL"));
         assert_matches!(result3, Err(()));
-        let result4 = apply_conversion(roman_to_integer, String::from("IVDLXXI"));
+        let result4 = apply_conversion(String::from("IVDLXXI"));
         assert_matches!(result4, Err(()));
-        let result5 = apply_conversion(roman_to_integer, String::from("VIIVII"));
+        let result5 = apply_conversion(String::from("VIIVII"));
         assert_matches!(result5, Err(()));
-        let result6 = apply_conversion(roman_to_integer, String::from("MDCCLXXXIXVII"));
+        let result6 = apply_conversion(String::from("MDCCLXXXIXVII"));
         assert_matches!(result6, Err(()));
     }
 }
